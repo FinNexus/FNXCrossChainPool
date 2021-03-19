@@ -16,6 +16,21 @@ contract FNXCrossChainPool is Ownable {
     function decimals() external view returns (uint8){
         return Erc20Token.decimals();
     }
+    function totalSupply() external view returns (uint256){
+        return Erc20Token.totalSupply();
+    }
+    function balanceOf(address account) external view returns (uint256){
+        return Erc20Token.balanceOf(account);
+    }
+    function transfer(address recipient, uint256 amount) external returns (bool){
+        return Erc20Token.transfer(recipient,amount);
+    }
+    function allowance(address owner, address spender) external view returns (uint256){
+        return Erc20Token.allowance(owner, spender);
+    }
+    function approve(address spender, uint256 amount) external returns (bool){
+        return Erc20Token.approve(spender, amount);
+    }
     function mint(address account, uint value)public onlyOwner returns(bool){
         return Erc20Token.transfer(account, value);
     }

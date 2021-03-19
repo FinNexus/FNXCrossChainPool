@@ -1,7 +1,8 @@
 pragma solidity ^0.6.7;
-import "./IERC20.sol";
+import "./SafeERC20.sol";
 import "./Ownable.sol";
 contract FNXCrossChainPool is Ownable {
+    using SafeERC20 for IERC20;
     IERC20 public Erc20Token;
     constructor(address token) public  {
         require(token != address(0),"Empty token address!");
@@ -22,19 +23,15 @@ contract FNXCrossChainPool is Ownable {
     function balanceOf(address account) external view returns (uint256){
         return Erc20Token.balanceOf(account);
     }
-    function transfer(address recipient, uint256 amount) external returns (bool){
-        return Erc20Token.transfer(recipient,amount);
-    }
     function allowance(address owner, address spender) external view returns (uint256){
         return Erc20Token.allowance(owner, spender);
     }
-    function approve(address spender, uint256 amount) external returns (bool){
-        return Erc20Token.approve(spender, amount);
-    }
     function mint(address account, uint value)public onlyOwner returns(bool){
-        return Erc20Token.transfer(account, value);
+        Erc20Token.safeTransfer(account, value);
+        return true;
     }
     function burn(address account, uint value)public onlyOwner returns(bool){
-        return Erc20Token.transferFrom(account, address(this), value);
+        Erc20Token.safeTransferFrom(account, address(this), value);
+        return true;
     }
 }
